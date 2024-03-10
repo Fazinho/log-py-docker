@@ -22,10 +22,8 @@ jobs:
       with:
         image: serhiofateev/demo-ci-cd-repo
         
-        
     - name: Build and push Docker Image
       uses: docker/build-push-action@v5
       with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}  
+        image: serhiofateev/demo-ci-cd-repo
+        registry: docker.io 
