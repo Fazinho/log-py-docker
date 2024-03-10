@@ -15,3 +15,9 @@ jobs:
         image: serhiofateev/demo-ci-cd-repo 
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        
+    - name: Build and push Docker Image
+      uses: docker/build-push-action@v4 
+      with:
+        image: serhiofateev/demo-ci-cd-repo
+        registry: docker.io
