@@ -2,17 +2,30 @@ name: Docker Image CI (Build and push to Docker Hub)
 
 on: workflow_dispatch
 
-jobs:
-  build:
+jobs: 
+  build_and_push:
     runs-on: ubuntu-latest     
     steps:
     - name: Check out the repo
-      uses: actions/checkout@v3      
-        
-    - name: Build and push Docker Image
-      uses: docker/build-push-action@v4 
+      uses: actions/checkout@v4
+              
+    - name: Login in to Docker Hub
+      uses: docker/login-action@v3
       with:
-        image: serhiofateev/demo-ci-cd-repo
-        registry: docker.io
+        image: serhiofateev/demo-ci-cd-repo 
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        image: serhiofateev/demo-ci-cd-repo
+        
+        
+    - name: Build and push Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}  
