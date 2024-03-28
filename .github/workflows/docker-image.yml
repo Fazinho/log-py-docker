@@ -27,4 +27,4 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         image: serhiofateev/demo-ci-cd-repo
-        tags: ${{ secrets.DOCKER_USERNAME }}/serhiofateev/demo-ci-cd-repo:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/log-py-docker:latest
