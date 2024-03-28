@@ -1,30 +1,30 @@
-name: Docker Image CI
+
+name: Docker Image CI (Build and push to Docker Hub)
+
 on: workflow_dispatch
-env:
-  docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
-  docker_password: ${{ secrets.DOCKERHUB_PASSWORD }}
-jobs:
-  build-docker-image:
-    runs-on: ubuntu-latest
+
+jobs: 
+  build_and_push:
+    runs-on: ubuntu-latest     
     steps:
     - name: Check out the repo
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build -t $docker_username/python:dev .
-    - name: Login to Docker
-      run: echo "$docker_password" | docker login -u "$docker_username" --password-stdin
-    - name: Push the docker image
-      run: docker push $docker_username/python:dev
-  promote-and-push-docker-image:  
-    runs-on: ubuntu-latest 
-    steps:
-    - name: Check out the repo
-    - uses: actions/checkout@v4
-    - name: Pull the Docker image
-      run: docker pull $docker_username/python:dev
-    - name: Tag the Docker image
-      run: docker tag $docker_username/python:dev $docker_username/python:release
-    - name: Login to Docker
-      run: echo "$docker_password" | docker login -u "$docker_username" --password-stdin
-    - name: Push the docker image
-      run: docker push $docker_username/python:release
+      uses: actions/checkout@v4
+              
+    - name: Login in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        image: serhiofateev/demo-ci-cd-repo 
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        image: serhiofateev/demo-ci-cd-repo
+        
+    - name: Build and push Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        image: serhiofateev/demo-ci-cd-repo
+        registry: docker.io
