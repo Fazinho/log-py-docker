@@ -1,11 +1,7 @@
 name: Docker Image CI (Build and push to Docker Hub)
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - 'master'
-         
+on:  workflow_dispatch
+
 env:
   docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
   docker_password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -24,11 +20,6 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: serhiofateev/demo-ci-cd-repo
-        tags: |
-          type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'master') }}
-          type=ref,event=tag
-        flavor: |
-          latest=false
         
     - name: Login to Docker Hub
       run:  echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
