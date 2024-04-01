@@ -24,6 +24,11 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: serhiofateev/demo-ci-cd-repo
+        tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
         
     - name: Login to Docker Hub
       run:  echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
