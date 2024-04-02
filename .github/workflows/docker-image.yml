@@ -4,6 +4,7 @@ on:  workflow_dispatch
 
 env:
   IMAGE_NAME: serhiofateev/demo-ci-cd-repo
+  build-number: ${{github.run_number}
   
 jobs: 
 
