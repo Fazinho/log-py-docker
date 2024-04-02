@@ -21,10 +21,8 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: |
-          serhiofateev/demo-ci-cd-repo
-          ghcr.io/${{ github.repository }}
-        
+        images: serhiofateev/demo-ci-cd-repo
+                
     - name: Login to Docker Hub
       run:  echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
              
