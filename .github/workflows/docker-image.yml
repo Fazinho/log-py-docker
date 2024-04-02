@@ -3,7 +3,6 @@ name: Docker Image CI (Build and push to Docker Hub)
 on:  workflow_dispatch
 
 env:
-  REGISTRY: docker.io
   IMAGE_NAME: serhiofateev/demo-ci-cd-repo
   
 jobs: 
@@ -26,7 +25,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        images: ${{ env.IMAGE_NAME }}
                            
     - name: Build and push
       uses: docker/build-push-action@v2
