@@ -3,7 +3,9 @@ name: Docker Image CI (Build and push to Docker Hub)
 on:  workflow_dispatch
 
 env:
-  IMAGE_NAME: serhiofateev/demo-ci-cd-repo
+  REGISTRY: ghcr.io
+  IMAGE_NAME: Fazinho/log-py-docker
+  IMAGE_TAG: ${{ github.run_number }} 
   
 jobs: 
 
@@ -18,19 +20,14 @@ jobs:
     - name: Login to Docker Hub
       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
       with:
+        registry: serhiofateev/demo-ci-cd-repo
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
-   
-    - name: Extract metadata for the Docker image
-      id: meta
-      uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-      with:
-        images: ${{ env.IMAGE_NAME }}
-                           
+                             
     - name: Build and push
       uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
       with:
         file: ./Dockerfile
         context: .
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
