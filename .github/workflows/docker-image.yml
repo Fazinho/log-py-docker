@@ -4,7 +4,7 @@ on:  workflow_dispatch
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: Fazinho/log-py-docker
+  IMAGE_NAME: fazinho/log-py-docker
   IMAGE_TAG: ${{ github.run_number }} 
   
 jobs: 
